@@ -38,7 +38,7 @@ const Form = () => {
 
     const submitHandler = (event) => {
         event.preventDefault()
-        axios.post('http://localhost:3001/recipes', form)
+        axios.post('/recipes', form)
         .then(res => alert(res))
         .catch(err => alert(err))
     }

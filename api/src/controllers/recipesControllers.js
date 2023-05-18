@@ -46,7 +46,7 @@ const cleanDbData = (arr) => {
 }
 
 const getRecipes = async () => {
-    const apiRecipes = (await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`)).data.results;
+    const apiRecipes = (await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)).data.results;
     
     const allApiRecipes = cleanApiData(apiRecipes);
     // const asdasd = allApiRecipes.forEach(function(elem) {return elem.id, elem.name})
@@ -70,17 +70,17 @@ const getRecipes = async () => {
     const response = [...allApiRecipes, ...dbRecipes];
     // console.log(response);
 
-    const randomRecipes = [];
-    //Se puede modularizar esto?:
-    for (let i = 0; i < 3; i++) {  //"i < 'x'" --> En 'x' poner la cantidad de recetas qe renderalizaremos
-        const randomIndex = Math.floor(Math.random() * response.length);
-        const anyRecipe = response[randomIndex];
-        randomRecipes.push(anyRecipe);
-    }
+    // const randomRecipes = [];
+    // //Se puede modularizar esto?:
+    // for (let i = 0; i < 9; i++) {  //"i < 'x'" --> En 'x' poner la cantidad de recetas qe renderalizaremos
+    //     const randomIndex = Math.floor(Math.random() * response.length);
+    //     const anyRecipe = response[randomIndex];
+    //     randomRecipes.push(anyRecipe);
+    // }
     
     // console.log(randomRecipes);
     
-    return randomRecipes;
+    return response;
 };
 
 const getRecipeById = async (id, source) => {
