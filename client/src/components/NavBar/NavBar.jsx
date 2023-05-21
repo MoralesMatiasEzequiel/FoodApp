@@ -14,17 +14,19 @@ const NavBar = () => {
         dispatch(setSearch(event.target.value))
     }
 
+    const handleHomeButton = () => {
+        dispatch(changePag(1))
+    }
+
     return (
         <nav className={style.nav}>
             <div>
-                <div className={style.searchBar}>
+                {/* <div className={style.searchBar}> */}
                     {/* <SearchBar handleChange={handleChange}/> */}
-                </div>
-                <div className={style.mainContainer}>
-                    <div>
-                        <Link to="/home">HOME</Link>
-                        <Link to="/create">CREATE RECIPE</Link>
-                    </div>
+                {/* </div> */}
+                <div>
+                    <Link to='/home'><button className={style.homeButton} onClick={handleHomeButton}>HOME</button></Link>
+                    <Link to='/create'><button className={style.createRecipeButton}>CREATE RECIPE</button></Link>
                 </div>
             </div>
         </nav>

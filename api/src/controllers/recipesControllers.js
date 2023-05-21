@@ -1,7 +1,7 @@
-const { Recipe, Diets } = require('../db');
-const axios = require('axios');
 require("dotenv").config();
 const { API_KEY, URL } = process.env;
+const axios = require('axios');
+const { Recipe, Diets } = require('../db');
 const { Op } = require('sequelize');
 
 
@@ -35,62 +35,59 @@ const cleanDbData = (arr) => {
             image: elem.dataValues.image,
             summary: elem.dataValues.summary,
             healthScore: elem.dataValues.healthScore,
-            // diets: elem.dataValues.diets,  //Esto es asi?
+            diets: elem.dataValues.Diets.map((elem) => elem.name),
             steps: elem.dataValues.steps,
             createInBd: elem.dataValues.createInBd,
         }
     });
-    // console.log(clean);
-    
     return clean;
 }
 
-const getRecipes = async () => {
-    const apiRecipes = (await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)).data.results;
+const getApiRecipes = async () => {
+    const apiRecipes = (await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=2`)).data.results;
     
     const allApiRecipes = cleanApiData(apiRecipes);
-    // const asdasd = allApiRecipes.forEach(function(elem) {return elem.id, elem.name})
-    // console.log(asdasd);
 
-    const dbRecipes = cleanDbData( await Recipe.findAll() );
-    // const ffdfdfdf = cleanDbData(dbRecipes)
-    // console.log(dbRecipes);
+    return allApiRecipes;
+}
 
-    // const dbRecipe = {
-    //     id: dbRecipes.dataValues.id,
-    //     name: dbRecipes.dataValues.title,
-    //     image: dbRecipes.dataValues.image,
-    //     summary: dbRecipes.dataValues.summary,
-    //     healthScore: dbRecipes.dataValues.healthScore,
-    //     steps: dbRecipes.dataValues.analyzedInstructions[0].steps,
-    //     diets: dbRecipes.dataValues.diets,
-    //     createInBd: dbRecipes.dataValues.createInBd
-    // };
+const getDbRecipes = async () => {
+    const dbRecipes = await Recipe.findAll({
+        include: {
+          model: Diets,
+          atrributes: ['name'],
+          through: {
+            atrributes: ['id', 'name'],
+          },
+        },
+    });
 
-    const response = [...allApiRecipes, ...dbRecipes];
-    // console.log(response);
+    const allDbRecipes = cleanDbData(dbRecipes);
+    // console.log(allDbRecipes);
+    return allDbRecipes;
 
+};
+
+const getRecipes = async () => {
+    const apiRecipes = await getApiRecipes()
+
+    const dbRecipes = await getDbRecipes();
+
+    const response = [...apiRecipes, ...dbRecipes];
+
+    return response;
+   
     // const randomRecipes = [];
     // //Se puede modularizar esto?:
     // for (let i = 0; i < 9; i++) {  //"i < 'x'" --> En 'x' poner la cantidad de recetas qe renderalizaremos
     //     const randomIndex = Math.floor(Math.random() * response.length);
     //     const anyRecipe = response[randomIndex];
     //     randomRecipes.push(anyRecipe);
-    // }
-    
-    // console.log(randomRecipes);
-    
-    return response;
+    // }  
 };
 
 const getRecipeById = async (id, source) => {
 
-    // const recipeRaw = source === "api" 
-    // ? await (axios.get(`${URL}/${id}/information?includeNutrition=false&apiKey=${API_KEY}`))
-    // : await Recipe.findByPk(id);
-    
-    // const recipe = cleanApiData(recipeRaw);
-    
     if(source === "api"){
         const recipeRaw = await (axios.get(`${URL}/${id}/information?includeNutrition=true&apiKey=${API_KEY}`));
 
@@ -102,16 +99,19 @@ const getRecipeById = async (id, source) => {
             image: recipe.image,
             summary: recipe.summary,
             healthScore: recipe.healthScore,
-            steps: recipe.analyzedInstructions[0]?.steps.map(step => {
-                return `<b>${step.number}</b> ${step.step}<br>`
-            }),
+            steps: recipe.analyzedInstructions[0]?.steps.map(step => `<b>${step.number}</b> ${step.step}<br>`
+            ),
             diets: recipe.diets,
             createInBd: false
         }
         return apiRecipe;
     }
-    const dbRecipe = await Recipe.findByPk(id);
-    return dbRecipe;
+    
+    const allDbRecipe = await getDbRecipes();
+    const idBdRecipe = allDbRecipe.find(obj => obj.id === id)
+    
+    return idBdRecipe;
+    
     
     //? await (axios.get(`${URL}/${id}/information?apiKey=${API_KEY}`))
     //const recipeRaw = await (axios.get(`${URL}/${id}/information?includeNutrition=true&apiKey=${API_KEY}`));
@@ -129,22 +129,39 @@ const searchByName = async (title) => {
                 name: {
                     [Op.iLike]: `%${title}%`,
                 }
-            }
+            },
+            include: {
+                model: Diets,
+                atrributes: ['name'],
+                through: {
+                  atrributes: ['id', 'name'],
+                },
+              }
         });
-        
-        const response = [...recipesApi, ...dbRecipes];
-        // console.log(response);
-        
 
+        const dbRecipe = cleanDbData(dbRecipes);
+
+        // const dbRecipes = await Recipe.findAll({
+        //     include: {
+        //       model: Diets,
+        //       atrributes: ['name'],
+        //       through: {
+        //         atrributes: ['id', 'name'],
+        //       },
+        //     },
+        // });
+        
+        const response = [...recipesApi, ...dbRecipe];
+        
         return response;
     }
 }
 
 const createRecipe = async (name, image, summary, healthScore, steps, diets, createInBd ) => { 
-    
+
     const [ newRecipe, created] = await Recipe.findOrCreate({ 
         where: { name },
-        defaults: { name, image, summary, healthScore, steps, createInBd },
+        defaults: { name, image, summary, healthScore, steps, createInBd},
         // include: [Diets]
      }); 
 
@@ -152,8 +169,8 @@ const createRecipe = async (name, image, summary, healthScore, steps, diets, cre
     if(diets && diets.length > 0) {
         const dietsFound = await Diets.findAll({ 
             where: { id: diets }});
-            // console.log(dietsFound[0].dataValues);
-        await newRecipe.setDiets(dietsFound);
+
+            await newRecipe.setDiets(dietsFound);
         
     }
     return newRecipe;
@@ -182,6 +199,8 @@ const deleteRecipe = async (id) => {
 }
 
 module.exports = {
+    getApiRecipes,
+    getDbRecipes,
     getRecipes,
     getRecipeById,
     searchByName,

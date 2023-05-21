@@ -1,4 +1,4 @@
-const { getRecipes, getRecipeById, searchByName, createRecipe, putRecipe, deleteRecipe } = require('../controllers/recipesControllers');
+const { getRecipes, getApiRecipes, getDbRecipes, getRecipeById, searchByName, createRecipe, putRecipe, deleteRecipe } = require('../controllers/recipesControllers');
 
 const getRecipesHandler = async (req, res) => {
 
@@ -11,6 +11,30 @@ const getRecipesHandler = async (req, res) => {
         res.status(400).send({ error: error.message});
     }
 };
+
+const getApiRecipesHandler = async (req, res) => {
+
+    try {
+        const apiRecipes = await getApiRecipes();
+
+        res.status(200).send(apiRecipes);
+
+    } catch (error) {
+        res.status(400).send({ error: error.message});
+    }
+}
+
+const getDbRecipesHandler = async (req, res) => {
+
+    try {
+        const dbRecipes = await getDbRecipes();
+
+        res.status(200).send(dbRecipes);
+
+    } catch (error) {
+        res.status(400).send({ error: error.message});
+    }
+}
 
 const getRecipeDetailHandler = async (req, res) => {
     const { id } = req.params;
@@ -99,6 +123,8 @@ const deleteRecipeHandler = async (req, res) => {
 
 module.exports = {
     getRecipesHandler,
+    getApiRecipesHandler,
+    getDbRecipesHandler,
     getRecipeDetailHandler,
     getNameRecipeHandler,
     createRecipeHandler,

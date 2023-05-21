@@ -1,5 +1,6 @@
 import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import Paginado from "../../components/Paginado/Paginado";
+import { SideBar } from "../../components/SideBar/SideBar";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRecipes } from "../../redux/actions";
@@ -28,17 +29,11 @@ const Home = () => {
         <div>
             <h1>Home</h1>
             <div>
-                <select>
-                    <option value="asc">Ascendente</option>
-                    <option value="desc">Descendente</option>
-                </select>
-                <select>
-                    <option value="alfabetico">A-Z</option>
-                    <option value="alfabeticoReves">Z-A</option>
-
-                </select>
+                <SideBar />
                 <select>
                     <option value="healtScore">HealthScore</option>
+                    <option value="max-min">Max-Min</option>
+                    <option value="min-max">Min-Max</option>
                 </select>
                 <select>
                     <option value="diets">Tipo de dieta</option>

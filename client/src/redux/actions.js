@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_RECIPES, NEXT_PAGE, PREV_PAGE, SEARCH, CHANGE_PAG } from "./action-types";
+import { GET_RECIPES, GET_DIETS ,NEXT_PAGE, PREV_PAGE, SEARCH, CHANGE_PAG, FILTER_BY_DIETS, FILTER_SORT_NAME, CREATE_RECIPE} from "./action-types";
 
 
 // const URL = "https://api.spoonacular.com/recipes";
@@ -34,19 +34,67 @@ export const getRecipes = () => {
     // const endpoint = '/recipes';
 
     return async (dispatch) => {
-
         try {
             const { data } = await axios.get('/recipes')
-            console.log(data);
             if(!data.length) throw new Error('No recipes');
 
             return dispatch({
                 type: GET_RECIPES,
                 payload: data
-            })
+            });
         } catch (error) {
             console.log(error.message);
         }
+    }
+}
+
+export const getDiets = () => {
+    return async function (dispatch) {
+        try {
+            const { data } = await axios.get(`/diets`);
+            // console.log(data);
+            if(!data.length) throw new Error('No diets');
+
+            return dispatch({ 
+                type: GET_DIETS, 
+                payload: data
+            });
+        } catch (error) {
+            console.log(error.message);
+        }        
+    };
+  };
+
+export const createRecipe = (form) => {
+    console.log(form);
+
+    return async (dispatch) => {
+        const post = await axios.post(`/recipes`, form);
+        // console.log(form);
+
+        return post                 
+    };
+};
+
+//   export const postPokemon = (pokemon) => {
+//     return async () => {
+//         const post = await axios.post(http://localhost:3001/pokemon/add, pokemon);
+//         console.log(post);
+//         return post;
+//     };
+//     };
+
+export const filterRecipesByDiets = (payload) => {
+    return{
+        type: FILTER_BY_DIETS,
+        payload
+    }
+}
+
+export const filterSortName = (payload) => {
+    return{
+        type: FILTER_SORT_NAME,
+        payload
     }
 }
 

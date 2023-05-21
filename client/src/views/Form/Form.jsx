@@ -1,69 +1,143 @@
-import axios from "axios";
-import { useState } from "react";
+// import style from "./Form.module.css";
+import React from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createRecipe, getDiets } from "../../redux/actions";
+import validations from "./validations";
+
 
 const Form = () => {
 
-    const [ form, setForm ] = useState({
-        email: "",
-        name: "",
-        phone: ""
-    });
-
-    const [ errors, setErrors ] = useState({
-        email: "",
-        name: "",
-        phone: ""
-    });
+    const dispatch = useDispatch();
     
-    const changeHandler = (event) => {
-        const property = event.target.name;
-        const value = event.target.value;
+    const diets = useSelector(state => state.diets);
+    // console.log(diets);
 
-        validate({...form, [property]:value})
-        setForm({...form, [property]:value})
+    useEffect(() =>{
+        dispatch(getDiets())
+    }, [dispatch]);
+
+    const [form, setForm] = useState({
+        name: '',
+        summary: '',
+        healthScore: 0,
+        steps: [],  
+        image: '',
+        diets: [],
+        createInBd: true
+    });
+
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (event) => {
+
+        setForm({
+            ...form,
+            [event.target.name]: event.target.value
+        })
+        setErrors(validations({
+            ...form,
+            [event.target.name]: event.target.value
+        }))
     };
-    
-    const validate = (form) => {
-        if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email)){
-            setErrors({...errors, email: ""})
-        }
-        else{
-            // console.log("asfafas");
-            setErrors({...errors, email: "Hay un error en el email"})
-        }
-        if(form.email === "") setErrors({...errors, email: "Email vacio"})
-    }
-    //Hacer las demás validaciones para los demas campos.
 
+    const handleDiets = (event) => {
+        if(event.target.checked){
 
-    const submitHandler = (event) => {
-        event.preventDefault()
-        axios.post('/recipes', form)
-        .then(res => alert(res))
-        .catch(err => alert(err))
-    }
+            setForm({
+                ...form,
+                diets: [...form.diets, event.target.value]
+            })
     
+            setErrors(validations({
+                ...form,
+                diets: [...form.diets, event.target.value]
+            },
+            ))
+        } else {
+            setForm({
+                ...form,
+                diets: form.diets.filter(t => t !== event.target.value)
+            })
+    
+            setErrors(validations({
+                ...form,
+                diets: form.diets.filter(t => t !== event.target.value)
+            }))
+        }
+    } 
+
+    const isDisabled =  
+    form.name.trim() === '';
+    // form.difficulty === '' ||
+    // form.season === '' ||
+    // form.countries.length === 0;
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch(createRecipe(form))
+    };
+
     return (
-        <form onSubmit={submitHandler}>
-            <div>
-                <label htmlFor="email">Email: </label>
-                <input name="email" type="text" value={form.email} onChange={changeHandler}/>
-                <span>{errors.email}</span>
-            </div>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="name">Name: </label>
+                    <br/>
+                    <input type='text' name="name" value={form.name} onChange={handleChange} />
+                    <br/>
+                    {errors.name && <p>{errors.name}</p>}
+                </div>
+                <div>
+                    <label htmlFor="summary">Summary: </label>
+                    <br/>
+                    <textarea name="summary" value={form.summary} onChange={handleChange}/>
+                    <br/>
+                    {errors.summary && <p>{errors.summary}</p>}
+                </div>
+                <div>
+                    <label htmlFor="healtScore">HealthScore: </label>
+                    <br/>
+                    <input name="healthScore" type='number' pattern="^[0-9]\d*$" max='100' min='0' value={form.healthScore} onChange={handleChange}></input>
+                    <br/>
+                    {errors.healthScore && <p>{errors.healthScore}</p>}
+                </div>
+                <div>
+                    <label htmlFor="steps">Steps: </label>
+                    <br/>
+                    <textarea name="steps" value={form.steps} onChange={handleChange} />
+                    <br/>
+                    {errors.steps && <p>{errors.steps}</p>}
+                </div>
+                <div>
+                    <label htmlFor="image">Image: </label>
+                    <br/>
+                    <input type='text' name="image" value={form.image} onChange={handleChange}></input>
+                    <br/>
+                    {errors.image && <p>{errors.image}</p>}
+                </div>
+                <span>Diets: </span>
+                <div>
+                    {diets?.map((diet, index) => (
+                        <label key={index} htmlFor={diet}>
+                            {diet}
+                            {/* <>{console.log(diet)}</> */}
+                            <input
+                                type="checkbox"
+                                name={diet}
+                                value={diet}
+                                onChange={handleDiets}/>
+                        </label>
+                    ))}
+                    <br/>
+                    {errors.diets && <p>{errors.diets}</p>}
+                </div>
+                <button type="submit" disabled={isDisabled}>Creates!</button>                           
+            </form>
+        </div>
 
-            <div>
-                <label htmlFor="name">Name: </label>
-                <input name="name" type="text" value={form.name} onChange={changeHandler}/>
-            </div>
+    );
 
-            <div>
-                <label htmlFor="phone">Phone: </label>
-                <input name="phone" type="text" value={form.phone} onChange={changeHandler}/>
-            </div>
-
-            <button type="submit">SUBMIT</button>
-        </form>
-    )
-}
+};
 
 export default Form;

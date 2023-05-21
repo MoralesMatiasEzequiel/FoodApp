@@ -5,28 +5,28 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('Recipe', {
     id: {
-      type: DataTypes.UUID(),  // fsdffds-54dd4-dfd5f57
-      defaultValue: DataTypes.UUIDV4(),
+      type: DataTypes.UUID,  // fsdffds-54dd4-dfd5f57
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       unique: true,
       allowNull: false,
     },
     name: {
-      type: DataTypes.STRING(),
+      type: DataTypes.STRING,
       allowNull: false, 
     },
     image:{
-      type: DataTypes.STRING(),
+      type: DataTypes.STRING,
       validate: {
         isUrl: true
       }
     },
     summary:{
-      type: DataTypes.STRING(),
+      type: DataTypes.STRING,
       allowNull: false
     },
     healthScore:{
-      type: DataTypes.FLOAT(),
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         min: 0,
@@ -34,16 +34,18 @@ module.exports = (sequelize) => {
       }
     },
     steps:{
-      type: DataTypes.ARRAY(DataTypes.STRING()),  //Antes: type: DataTypes.ARRAY(DataTypes.STRING()),
+      type: DataTypes.ARRAY(DataTypes.TEXT),  //Antes: type: DataTypes.ARRAY(DataTypes.STRING()),
       allowNull: false
       // stepBreackdown: DataTypes.BOOLEAN()
 
     },
-    createInBd: {    //Esto me funcionaria a modo de flat que lo cree yo.
-      type: DataTypes.BOOLEAN(),
-      defaultValue: true,
-      allowNull: false
-    }
+    createInBd: true
+
+    // createInBd: {    //Esto me funcionaria a modo de flat que lo cree yo.
+    //   type: DataTypes.BOOLEAN(),
+    //   defaultValue: true,
+    //   allowNull: false
+    // }
   }, { timestamps: false });
 };
 

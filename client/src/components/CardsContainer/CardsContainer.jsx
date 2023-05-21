@@ -18,6 +18,7 @@ const CardsContainer = () => {
    
     return (
         <div>
+            
             <Paginado cantPages={cantPages}></Paginado> 
             <div className={style.container}>
                 {viewRecipes && viewRecipes.map(recipe => {
@@ -33,8 +34,8 @@ const CardsContainer = () => {
                             return `<b>${step.number}</b> ${step.step}<br>`
                         })}
                         createInBd={recipe.createInBd}
-                        />
-                    })}
+                    />  
+                })}
             </div>
         </div>
     )

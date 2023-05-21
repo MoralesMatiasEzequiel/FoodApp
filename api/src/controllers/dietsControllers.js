@@ -31,7 +31,7 @@ const getAllDiets = async () => {
         })
     })
 
-    return [diets];
+    return diets;
 };
 
 

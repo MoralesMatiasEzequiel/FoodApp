@@ -11,11 +11,10 @@ const validate = (req, res, next) => {
     if(!healthScore) return res.status(400).json({ error: "Missing healthScore"});
     if(!steps) return res.status(400).json({ error: "Missing steps"});
     if(!diets) return res.status(400).json({ error: "Missing diets" });
-    if(!createInBd) return res.status(400).json({ error: "Missing createInBd"});
+    // if(!createInBd) return res.status(400).json({ error: "Missing createInBd"});
 
     next();
 }
-
 /*Tambien puede ser:
 if(!name || !name.trim() || !difficulty || !season ){
             throw new Error('Data missing');
