@@ -1,9 +1,5 @@
 import axios from "axios";
-import { GET_RECIPES, GET_DIETS ,NEXT_PAGE, PREV_PAGE, SEARCH, CHANGE_PAG, FILTER_BY_DIETS, FILTER_SORT_NAME, CREATE_RECIPE} from "./action-types";
-
-
-// const URL = "https://api.spoonacular.com/recipes";
-// const API_KEY = "899a64dd68724c03a8330d65ca462226";
+import { GET_RECIPES, GET_DIETS , GET_RECIPES_BY_NAME, NEXT_PAGE, PREV_PAGE, SEARCH, CHANGE_PAG, FILTER_BY_DIETS, FILTER_SORT_NAME, FILTER_RECIPES_SOURCE, FILTER_HEALTHSCORE, DELETE_RECIPE} from "./action-types";
 
 export const nextPage = () => {
     return {
@@ -23,15 +19,14 @@ export const changePag = (pagenumber) => {
     }
 };
 
-export const setSearch = (payload) => {
-    return {
+export const setSearch = (payload) => {  //Qué onda esto?
+    return { 
         type: SEARCH,
         payload,
     }
 };
 
 export const getRecipes = () => {
-    // const endpoint = '/recipes';
 
     return async (dispatch) => {
         try {
@@ -48,55 +43,82 @@ export const getRecipes = () => {
     }
 }
 
-export const getDiets = () => {
-    return async function (dispatch) {
+export const getRecipesByName = (title) => {
+
+    return async (dispatch) => {
         try {
+            const response = await axios.get(`/recipes?title=${title}`);
+            // console.log(response);
+            const { data } = response;
+
+            return dispatch({
+                type: GET_RECIPES_BY_NAME,
+                payload: data,
+            });
+            
+        } catch (error) {
+            alert(`There is no recipe named ${title}`);
+        }
+    }
+}
+
+export const getDiets = () => {
+
+    return async (dispatch) => {
+
             const { data } = await axios.get(`/diets`);
-            // console.log(data);
-            if(!data.length) throw new Error('No diets');
 
             return dispatch({ 
                 type: GET_DIETS, 
                 payload: data
-            });
-        } catch (error) {
-            console.log(error.message);
-        }        
+            });       
     };
   };
 
 export const createRecipe = (form) => {
-    console.log(form);
+    form.steps = form.steps.split('.').map(step => step.trim());
+    // console.log(form);
 
     return async (dispatch) => {
         const post = await axios.post(`/recipes`, form);
-        // console.log(form);
+        // console.log(post);
 
-        return post                 
+        return post;                 
     };
 };
 
-//   export const postPokemon = (pokemon) => {
-//     return async () => {
-//         const post = await axios.post(http://localhost:3001/pokemon/add, pokemon);
-//         console.log(post);
-//         return post;
-//     };
-//     };
+export const deletedRecipe = (payload) => {
 
-export const filterRecipesByDiets = (payload) => {
-    return{
-        type: FILTER_BY_DIETS,
-        payload
-    }
-}
+    return async (dispatch) => {
+        const deleted = await axios.delete(`/recipes/${payload}`);
+
+        return deleted;                 
+    };
+};
 
 export const filterSortName = (payload) => {
-    return{
-        type: FILTER_SORT_NAME,
-        payload
+    
+    return { type: FILTER_SORT_NAME, payload
     }
-}
+};
+
+export const filterRecipes = (source) => {
+
+    return { type: FILTER_RECIPES_SOURCE, payload: source }
+
+};
+
+export const filterByDiets = (payload) => {
+    // console.log(payload);
+    return {type: FILTER_BY_DIETS, payload };       
+};
+
+export const filterHealthScore = (payload) => {
+
+    return { type: FILTER_HEALTHSCORE, payload: payload }
+};
+
+
 
 
 

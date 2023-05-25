@@ -1,4 +1,4 @@
-.paginado {
+.pagination {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -13,18 +13,25 @@
     font-weight: 600;
     font-size: 16px;
     margin: 0 10px;
-    border: 2px solid black;
-    border-radius: .8rem;
-    color: black; 
+    border: 2px solid yellow;
+    color: white; 
+    background-color: black;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 25px grey;
+    box-shadow: 0 5px 25px rgba(255, 255, 255, 0.603);
 
 }
 
-.paginado p, h4 {
-    background-color: aquamarine;
-    border-radius: 4px;
-    margin: 4px;
-    padding: 10px;
+.pagination button.active {
+    font-weight: 900;
+    border-color:  black;
+    background: yellow;
+    color: black;
+}
+@media (max-width: 600px) {
+    .pagination button {
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+    }
 }

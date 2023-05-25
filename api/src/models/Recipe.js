@@ -34,18 +34,11 @@ module.exports = (sequelize) => {
       }
     },
     steps:{
-      type: DataTypes.ARRAY(DataTypes.TEXT),  //Antes: type: DataTypes.ARRAY(DataTypes.STRING()),
+      type: DataTypes.ARRAY(DataTypes.TEXT), 
       allowNull: false
-      // stepBreackdown: DataTypes.BOOLEAN()
-
     },
     createInBd: true
 
-    // createInBd: {    //Esto me funcionaria a modo de flat que lo cree yo.
-    //   type: DataTypes.BOOLEAN(),
-    //   defaultValue: true,
-    //   allowNull: false
-    // }
   }, { timestamps: false });
 };
 

@@ -2,13 +2,13 @@ const getAllDiets = require('../controllers/dietsControllers');
 
 
 const getDietsHandler = async (req, res) => {
-    // const { name } = r.query; //Por query?
-    // const results = getAllDiets(/*Lo que buscamos*/);
+ 
     try {
         
         const dietsApi = await getAllDiets();
-        // console.log(dietsApi);
+
         return res.status(200).json(dietsApi);
+        
     } catch (error) {
         return res.status(500).json({error: error.message});        
     }; 

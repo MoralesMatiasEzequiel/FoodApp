@@ -15,7 +15,7 @@ const cleanApiData = (arr) => {
             image: elem.image,
             summary: elem.summary,
             healthScore: elem.healthScore,
-            diets: elem.diets,  //Esto es asi?
+            diets: elem.diets,  
             steps: elem.analyzedInstructions[0]?.steps.map(step => {
                 return `<b>${step.number}</b> ${step.step}<br>`
             }),
@@ -44,7 +44,7 @@ const cleanDbData = (arr) => {
 }
 
 const getApiRecipes = async () => {
-    const apiRecipes = (await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=2`)).data.results;
+    const apiRecipes = (await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)).data.results;
     
     const allApiRecipes = cleanApiData(apiRecipes);
 
@@ -75,15 +75,18 @@ const getRecipes = async () => {
 
     const response = [...apiRecipes, ...dbRecipes];
 
-    return response;
    
     // const randomRecipes = [];
     // //Se puede modularizar esto?:
-    // for (let i = 0; i < 9; i++) {  //"i < 'x'" --> En 'x' poner la cantidad de recetas qe renderalizaremos
+    // for (let i = 0; i < 100; i++) {  //"i < 'x'" --> En 'x' poner la cantidad de recetas qe renderalizaremos
     //     const randomIndex = Math.floor(Math.random() * response.length);
     //     const anyRecipe = response[randomIndex];
     //     randomRecipes.push(anyRecipe);
     // }  
+    // return randomRecipes;
+    
+    return response;
+
 };
 
 const getRecipeById = async (id, source) => {
@@ -140,16 +143,6 @@ const searchByName = async (title) => {
         });
 
         const dbRecipe = cleanDbData(dbRecipes);
-
-        // const dbRecipes = await Recipe.findAll({
-        //     include: {
-        //       model: Diets,
-        //       atrributes: ['name'],
-        //       through: {
-        //         atrributes: ['id', 'name'],
-        //       },
-        //     },
-        // });
         
         const response = [...recipesApi, ...dbRecipe];
         
@@ -161,21 +154,19 @@ const createRecipe = async (name, image, summary, healthScore, steps, diets, cre
 
     const [ newRecipe, created] = await Recipe.findOrCreate({ 
         where: { name },
-        defaults: { name, image, summary, healthScore, steps, createInBd},
-        // include: [Diets]
+        defaults: { name, image, summary, healthScore, steps, createInBd}
      }); 
 
 
     if(diets && diets.length > 0) {
         const dietsFound = await Diets.findAll({ 
-            where: { id: diets }});
+            where: { name: diets }});
 
             await newRecipe.setDiets(dietsFound);
         
     }
     return newRecipe;
-
-    //Esto se puede modulariazar: const createRecipe = async (...) => await Recipe.create({...})
+    
 }
 
 const putRecipe = async (id, name, image, summary, healthScore, steps, diets) => {
@@ -267,4 +258,52 @@ const createRecipe = async (name, image, summary, healthScore, steps, diets, cre
 
     //Esto se puede modulariazar: const createRecipe = async (...) => await Recipe.create({...})
 }
+*/
+
+
+
+
+/*
+const recipe = {
+        name,
+        image,
+        healthScore,
+        summary,
+        steps,
+        diets,
+        createInBd
+    };
+    const dietInfo = await Diets.findAll({
+        where: {
+            id: diets
+        }
+    });
+    const createRecipe = await Recipe.create(recipe);
+
+    createRecipe.addDiets(dietInfo);
+
+    return Recipe.findAll()
+
+
+const createRecipe = async (name, image, summary, healthScore, steps, diets, createInBd ) => { 
+
+    const [ newRecipe, created] = await Recipe.findOrCreate({ 
+        where: { name },
+        defaults: { name, image, summary, healthScore, steps, createInBd},
+        // include: [Diets]
+     }); 
+
+
+    if(diets && diets.length > 0) {
+        const dietsFound = await Diets.findAll({ 
+            where: { name: diets }});
+
+            await newRecipe.setDiets(dietsFound);
+        
+    }
+    return newRecipe;
+
+    //Esto se puede modulariazar: const createRecipe = async (...) => await Recipe.create({...})
+}
+
 */

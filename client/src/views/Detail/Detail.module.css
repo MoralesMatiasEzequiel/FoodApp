@@ -1,12 +1,78 @@
-/* .container{
-    padding: 0rem;
-    margin-top: 0rem;
+.container{
+    flex-direction: column; 
+    justify-content:center;
+    padding: 2rem;
+    margin: 1rem;
+    margin-left: 2em;
+    margin-right: 2em;
     border-radius: 5rem;
-    box-shadow: 0 0 .2rem rgba(81, 255, 110, 0.461), 0 0 .2rem rgba(81, 255, 110, 0.461), 0 0 2rem rgba(81, 255, 110, 0.461);
-
+    box-shadow: 0 0 .2rem rgba(255, 243, 81, 0.616), 0 0 .2rem rgba(255, 243, 81, 0.616), 0 0 2rem rgba(255, 243, 81, 0.616);
     display: flex;
     align-items: center;
+}
+
+.img {
+    box-sizing: border-box;
+    border-radius: 5rem;
+    box-shadow: 12px 17px 51px rgba(168, 35, 35, 0.5);
+    border: .13rem solid black;
+    height: 21.75rem;
+    width: 31.5rem;
+
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+}
+
+.titulos {
+    color: white;
+    font-size: 30px;
+}
+
+.name {
+    color: white;
+    box-shadow: 12px 17px 51px rgba(168, 35, 35, 0.5);
+}
+
+.id {
+    color: white;
+    font-size: 15px;
+    box-shadow: 12px 17px 51px rgba(168, 35, 35, 0.5);
+
+}
+
+.texto {
+    color: white;
+    font-family: sans-serif;
+    font-weight: 600;
+    box-shadow: 12px 17px 51px rgba(168, 35, 35, 0.5);
+}
+
+.buttonDelete {
+    position: absolute;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-top: .8rem;
+    left: 56.5em;
+    background-color: #000;
+    border: 3px solid red;
+    border-radius: 1rem;
     color: #fff;
-    top: 0%;
-    right: 0%;
-} */
+    width: 6rem;
+    height: 2rem;
+    font-weight: bolder;
+    font-size: .7rem;
+    transition: cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.4s;
+    box-shadow: -5px 5px 15px black;
+    cursor:pointer;
+}
+
+.buttonDelete:hover {
+    transform: translate(5px, -5px);
+    z-index: 10;
+  }

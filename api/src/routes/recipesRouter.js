@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getRecipesHandler, getRecipeDetailHandler, getNameRecipeHandler, createRecipeHandler, updateHandler, deleteRecipeHandler } = require('../handlers/recipesHandlers')
+const { getRecipesHandler, getApiRecipesHandler, getDbRecipesHandler, getRecipeDetailHandler, getNameRecipeHandler, createRecipeHandler, updateHandler, deleteRecipeHandler } = require('../handlers/recipesHandlers')
 
 const recipeRouter = Router();
 
@@ -23,9 +23,21 @@ if(!name || !name.trim() || !difficulty || !season ){
 
 recipeRouter.get('/:id', getRecipeDetailHandler);  //:idRecipe
 
-recipeRouter.get('/', getNameRecipeHandler);
+recipeRouter.get('/', async (req, res) => {
+    
+    const { title } = req.query;
 
-recipeRouter.get('/', getRecipesHandler); //Traemos todas las recetas
+    if (title) {
+        return getNameRecipeHandler(req, res);
+    }
+
+    return getRecipesHandler(req, res); //Traemos todas las recetas
+});
+// recipeRouter.get('/', getRecipesHandler); 
+
+recipeRouter.get('/api', getApiRecipesHandler);
+
+recipeRouter.get('/db', getDbRecipesHandler);
 
 recipeRouter.post('/', validate, createRecipeHandler);
 

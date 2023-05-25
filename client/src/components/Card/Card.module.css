@@ -7,8 +7,9 @@
     width: 20rem;
     height: 23rem;
     background: none;
-    border: .1rem solid white;
-    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.50);
+    background-color: rgba(245, 245, 220, 0.301);
+    border: .13rem solid black;
+    box-shadow: 12px 17px 51px rgba(168, 35, 35, 0.5);
     backdrop-filter: blur(6px);
     border-radius: .7rem;
     text-align: center;
@@ -23,7 +24,7 @@
 }
 
 .card:hover {
-    border: 1px solid black;
+    border: 1px solid white;
     transform: scale(1.05);
 }
 

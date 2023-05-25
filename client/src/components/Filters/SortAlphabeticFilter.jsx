@@ -1,9 +1,9 @@
-import style from "./AlphabeticFilter.module.css";
+import style from "./SortAlphabeticFilter.module.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { filterSortName } from "../../redux/actions";
 
-export const SortAlphabeticFilter = () => {
+export const    SortAlphabeticFilter = () => {
     const dispatch = useDispatch();
     const [ value, setValue ] = useState('')
 
@@ -15,7 +15,8 @@ export const SortAlphabeticFilter = () => {
 
     return (
         <div className={style.select}>
-            <select onChange={handleSortName} value={value}>
+            <select defaultValue="alphabetic" onChange={handleSortName}>
+                <option value="alphabetic">Alphabetical order</option>
                 <option value="a-z">A-Z</option>
                 <option value="z-a">Z-A</option>
             </select>

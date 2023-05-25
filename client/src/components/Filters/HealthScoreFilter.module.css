@@ -1,0 +1,19 @@
+.select::after {
+    content: '\25BC';
+    color: black;
+    position: absolute;
+    top: 1;
+    left: 72%;
+    padding: 0 1em;
+    height: 1.5em;
+    border-radius: 0rem .7em .7em 0em;
+    border-left: 0em;
+    background: rgb(221, 153, 25);
+    cursor: pointer;
+    pointer-events: none;
+    transition: .25s all ease;
+}
+
+.select:hover::after {
+    color: yellow;
+} 

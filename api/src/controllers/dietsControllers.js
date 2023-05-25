@@ -11,17 +11,16 @@ const cleanData = (arr) => { //Creo que esto se puede refactorizar.
 }
 
 const getAllDiets = async () => {
-    // const databaseDiets = await Diets.findAll();  //Antes: const databaseDiets = await Diets.findAll({where: { diets }});
-    // console.log(databaseDiets);
+  
     const apiDietsRaw = (  //Aqui va a llegar toda la data de la api (URL), y va a llegar con mucha informacion. A esta la pasaremos por un filtro para descartar la info que esta demas.
         await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
     ).data.results;
+    // console.log(apiDietsRaw);  
 
     const apiDiets = cleanData(apiDietsRaw).flat() //Este sera el filtro.
 
     // const dietsEach = dietArray.flat();
     const diets = [...new Set(apiDiets)];
-    // console.log(diets);  
 
     diets.forEach((diet) => {
         Diets.findOrCreate({
@@ -30,6 +29,7 @@ const getAllDiets = async () => {
             }
         })
     })
+    // console.log(diets);
 
     return diets;
 };

@@ -13,11 +13,5 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(),
         allowNull: false,
       }
-      // ,
-      // createInBd: { 
-      //   type: DataTypes.BOOLEAN(),
-      //   defaultValue: true,
-      //   allowNull: false
-      // }
   }, { timestamps: false });
 }

@@ -30,7 +30,7 @@ const CardsContainer = () => {
                         summary={recipe.summary}
                         healthScore={recipe.healthScore}
                         diets={recipe.diets}
-                        steps={recipe.steps.map(step => {
+                        steps={recipe.steps?.map(step => {
                             return `<b>${step.number}</b> ${step.step}<br>`
                         })}
                         createInBd={recipe.createInBd}

@@ -20,7 +20,7 @@ const validations = (form) => {
         errors.steps = 'Please insert the steps of the recipe.'
     }
    
-    if(!form.diets.length){
+    if(form.diets === []){
         errors.diets = 'Please select at least one type of diet.'
     }
     return errors;

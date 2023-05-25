@@ -16,18 +16,18 @@ const Paginado = ({ cantPages }) => {
     }
 
     return (
-        <div className={style.paginado}>
+        <div className={style.pagination}>
             {currentPage > 1 ? (
                 <div>
-                    <button onClick={prev}>PREV</button>
-                    <p>{currentPage - 1}</p>
+                    <button onClick={prev}>{"<"}</button>
+                    <button onClick={prev}>{currentPage - 1}</button>
                 </div>
             ) : null}   
-            <h4>{currentPage}</h4>
+            <button className={style.active}>{currentPage}</button>
             {currentPage < cantPages ? (
                 <div>
-                    <p>{currentPage + 1}</p>
-                    <button onClick={next}>NEXT</button>
+                    <button onClick={next}>{currentPage + 1}</button>
+                    <button onClick={next}>{">"}</button>
                 </div>
             ) : null}    
         </div>
