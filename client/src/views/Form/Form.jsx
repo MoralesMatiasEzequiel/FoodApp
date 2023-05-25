@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createRecipe, getDiets } from "../../redux/actions";
 import validations from "./validations";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 const Form = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     
     const diets = useSelector(state => state.diets);
-    // console.log(diets);
 
     useEffect(() =>{
         dispatch(getDiets())
@@ -51,9 +51,10 @@ const Form = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         dispatch(createRecipe(form))
-        console.log(form);
 
         alert('Recipe created successfully')    
+        history.push(`/home`);
+
         setForm({
         name: '',
         summary: '',
@@ -124,9 +125,7 @@ const Form = () => {
                 </div>
                     <br/>
                     {errors.diets && <p className={style.errors}>{errors.diets}</p>}
-                
                 <button className={style.button} type="submit" disabled={isDisabled}>Create recipe!</button>  
-                <Link to='/home'></Link>                         
             </form>
         </div>
 

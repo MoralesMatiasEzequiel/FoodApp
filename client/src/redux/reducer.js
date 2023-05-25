@@ -95,80 +95,79 @@ const rootReducer = (state = initialState, action) => {
             
             return { ...state, recipes: orderedHealthScore };
 
-        case FILTER_BY_DIETS:
-            const selectedDiets = action.payload;
-          
-            if (selectedDiets.length === 0) {
-              return {
-                ...state,
-                recipes: [...state.recipesCopy],
-                currentPage: 1
-              };
-            }
-          
-            const recipesByDiets = state.recipesCopy.filter((recipe) => {
-              if (recipe.diets && recipe.diets.length > 0) {
-                return selectedDiets.every((diet) => recipe.diets.includes(diet));
-              }
-              return false;
-            });
-            
-            console.log(recipesByDiets);
-            return {
-              ...state,
-              recipes: recipesByDiets,
-              currentPage: 1
-            };    
-
+        
         case FILTER_SORT_NAME:
-            // console.log(action.payload);
+            if(action.payload === 'a-z' || action.payload === 'z-a' || action.payload === 'alphabetic'){
+                const orderRecipes = [...state.recipes];
+                let ordened = []
 
-            const orderRecipes = [...state.recipes];
-            let ordened = []
+                if(action.payload === "a-z") {
+                    ordened = orderRecipes.sort((a, b) => {
+                        const firstRecipe = a.name.toLowerCase();
+                        const secondRecipe = b.name.toLowerCase();
 
-            if(action.payload === "a-z") {
-                ordened = orderRecipes.sort((a, b) => {
-                    const firstRecipe = a.name.toLowerCase();
-                    const secondRecipe = b.name.toLowerCase();
-
-                    if (firstRecipe < secondRecipe) {
-                        return -1;
-                    }
-                    if (firstRecipe > secondRecipe) {
-                        return 1;
-                    }
-                    return 0;
-                })
-            }
-
-            if(action.payload === "z-a") {
-                ordened = orderRecipes.sort((a, b) => {
-                    const firstRecipe = a.name.toLowerCase();
-                    const secondRecipe = b.name.toLowerCase();
-
-                    if (firstRecipe < secondRecipe) {
-                        return 1;
-                    }
-                    if (firstRecipe > secondRecipe) {
-                        return -1;
-                    }
-                    return 0;
-                })
-            }
-            
-            if(action.payload === "alphabetic"){
-                return {
-                    ...state, recipes: [...state.recipesCopy]
+                        if (firstRecipe < secondRecipe) {
+                            return -1;
+                        }
+                        if (firstRecipe > secondRecipe) {
+                            return 1;
+                        }
+                        return 0;
+                    })
                 }
-            }
 
-            return {
-                ...state,
-                recipes: ordened
+                if(action.payload === "z-a") {
+                    ordened = orderRecipes.sort((a, b) => {
+                        const firstRecipe = a.name.toLowerCase();
+                        const secondRecipe = b.name.toLowerCase();
 
-            };
+                        if (firstRecipe < secondRecipe) {
+                            return 1;
+                        }
+                        if (firstRecipe > secondRecipe) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                }
+                
+                if(action.payload === "alphabetic"){
+                    return {
+                        ...state, recipes: [...state.recipesCopy]
+                    }
+                }
+
+                return {
+                    ...state,
+                    recipes: ordened
+                };
+            }       
             
+            case FILTER_BY_DIETS:
 
+                const selectedDiets = action.payload;
+              
+                if (selectedDiets.length === 0) {
+                  return {
+                    ...state,
+                    recipes: [...state.recipesCopy],
+                    currentPage: 1
+                  };
+                }
+              
+                const recipesByDiets = state.recipesCopy.filter((recipe) => {
+                  if (recipe.diets && recipe.diets.length > 0) {
+                    return selectedDiets.every((diet) => recipe.diets.includes(diet));
+                  }
+                  return false;
+                });
+                
+                console.log(recipesByDiets);
+                return {
+                  ...state,
+                  recipes: recipesByDiets,
+                  currentPage: 1
+                };    
             
 
         default: 
