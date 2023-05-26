@@ -4,7 +4,7 @@ require("dotenv").config();
 const { API_KEY, URL } = process.env;
 
 
-const cleanData = (arr) => { //Creo que esto se puede refactorizar.
+const cleanData = (arr) => { 
     const clean = arr.map(recipe => recipe.diets
     );
     return clean;
@@ -12,14 +12,12 @@ const cleanData = (arr) => { //Creo que esto se puede refactorizar.
 
 const getAllDiets = async () => {
   
-    const apiDietsRaw = (  //Aqui va a llegar toda la data de la api (URL), y va a llegar con mucha informacion. A esta la pasaremos por un filtro para descartar la info que esta demas.
+    const apiDietsRaw = (  //Aqui va a llegar toda la data de la api (URL). A esta la pasaremos por un filtro para descartar la info que esta demas.
         await axios.get(`${URL}/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
     ).data.results;
-    // console.log(apiDietsRaw);  
 
-    const apiDiets = cleanData(apiDietsRaw).flat() //Este sera el filtro.
+    const apiDiets = cleanData(apiDietsRaw).flat() 
 
-    // const dietsEach = dietArray.flat();
     const diets = [...new Set(apiDiets)];
 
     diets.forEach((diet) => {
@@ -29,41 +27,9 @@ const getAllDiets = async () => {
             }
         })
     })
-    // console.log(diets);
 
     return diets;
 };
 
 
 module.exports = getAllDiets;
-
-
-
-//Antes:
-// const cleanData = (arr) => {
-//     const clean = arr.map(recipe => 
-//         {
-//         return{
-//             /*
-//             Aqui van a ir las propiedades que querramos mostrar. Aqui se produce el filtro.
-//             Ej:
-//             name: elem.name,
-//             ingredientes: elem.ingredientes,
-//             etc...,
-//             created: false   //Esto es para marcar que la dieta que queremos mostrar no es creada por nosotros (no viene de la base de datos), sino fue creada por la api.
-//             */
-//         }
-//     }
-//     );
-//     return clean;
-
-//     /*Modularizacion del mapeo:
-//     const cleanData = (arr) => 
-//         arr.map((elem) => {
-//             return {
-//                 name: elem.name,
-//                 etc...
-//             };
-//         });    
-//     */
-// }

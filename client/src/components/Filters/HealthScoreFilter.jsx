@@ -1,5 +1,4 @@
 import style from "./HealthScoreFilter.module.css";
-// import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { filterHealthScore } from "../../redux/actions";
 
@@ -9,7 +8,6 @@ export const HealthScoreFilter = () => {
 
     const handleFilterHealthScore = (event) => {
         dispatch(filterHealthScore(event));
-        // console.log();
     };
 
     return (

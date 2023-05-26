@@ -1,8 +1,8 @@
 import style from "./Home.module.css";
 import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import { SideBar } from "../../components/SideBar/SideBar";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { getRecipes } from "../../redux/actions";
 
 const Home = () => {

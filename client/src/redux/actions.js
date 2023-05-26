@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_RECIPES, GET_DIETS , GET_RECIPES_BY_NAME, NEXT_PAGE, PREV_PAGE, SEARCH, CHANGE_PAG, FILTER_BY_DIETS, FILTER_SORT_NAME, FILTER_RECIPES_SOURCE, FILTER_HEALTHSCORE, DELETE_RECIPE} from "./action-types";
+import { GET_RECIPES, GET_DIETS , GET_RECIPES_BY_NAME, NEXT_PAGE, PREV_PAGE, SEARCH, CHANGE_PAG, FILTER_BY_DIETS, FILTER_SORT_NAME, FILTER_RECIPES_SOURCE, FILTER_HEALTHSCORE } from "./action-types";
 
 export const nextPage = () => {
     return {
@@ -19,7 +19,7 @@ export const changePag = (pagenumber) => {
     }
 };
 
-export const setSearch = (payload) => {  //Qué onda esto?
+export const setSearch = (payload) => {  
     return { 
         type: SEARCH,
         payload,
@@ -48,7 +48,7 @@ export const getRecipesByName = (title) => {
     return async (dispatch) => {
         try {
             const response = await axios.get(`/recipes?title=${title}`);
-            // console.log(response);
+
             const { data } = response;
 
             return dispatch({
@@ -81,7 +81,6 @@ export const createRecipe = (form) => {
 
     return async (dispatch) => {
         const post = await axios.post(`/recipes`, form);
-        // console.log(post);
 
         return post;                 
     };
@@ -94,7 +93,7 @@ export const deletedRecipe = (payload) => {
 
         return deleted;                 
     };
-};
+    };
 
 export const filterSortName = (payload) => {
     
@@ -117,85 +116,3 @@ export const filterHealthScore = (payload) => {
 
     return { type: FILTER_HEALTHSCORE, payload: payload }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-// export const getRecipes = () => {
-//     return async function (dispatch){
-//         const apiData = (await axios.get('http://localhost:3001/recipes'))
-//         // .data.results 
-        
-//         // const recipeApi = apiData.map(elem => {
-
-//         //     //  return{  //No mostrar todos los datos, dejar esto para el Detail.
-//         //     //     name: elem.title,
-//         //     //     image: elem.image,
-//         //     //     healthScore: elem.healthScore,
-//         //     //     diets: elem.diets,  
-//         //     // }
-
-//         //     return{
-//         //         id: elem.id,
-//         //         name: elem.title,
-//         //         image: elem.image,
-//         //         summary: elem.summary,
-//         //         healthScore: elem.healthScore,
-//         //         diets: elem.diets,  
-//         //         steps: elem.analyzedInstructions[0]?.steps.map(step => {
-//         //             return `<b>${step.number}</b> ${step.step}<br>`
-//         //         }),
-//         //         createInBd: false,
-//         //     }
-//         // });
-//         // const recipeApi = {
-//         //     id: apiData.id,
-//         //     name: apiData.title,
-//         //     image: apiData.image,
-//         //     summary: apiData.summary,
-//         //     healthScore: apiData.healthScore,
-//         //     // steps: apiData.analyzedInstructions[0].steps,
-//         //     diets: apiData.diets,
-//         //     createInBd: false
-//         // }
-
-//         // const recipes = recipeApi.data;
-//         // console.log(recipeApi);
-
-//         dispatch({ type: GET_RECIPES, payload: apiData});
-
-//     };
-// };
-
-// export const getRecipeByID = (id) => {
-//     return async function (dispatch){
-//         const apiData = await axios.get(`${URL}/${id}/information?includeNutrition=true&apiKey=${API_KEY}`) 
-        
-//         const recipeApi = apiData.map(elem => {
-
-//             return{
-//                 id: elem.id,
-//                 name: elem.title,
-//                 image: elem.image,
-//                 summary: elem.summary,
-//                 healthScore: elem.healthScore,
-//                 diets: elem.diets,  
-//                 steps: elem.analyzedInstructions[0]?.steps.map(step => {
-//                     return `<b>${step.number}</b> ${step.step}<br>`
-//                 }),
-//                 createInBd: false,
-//             }
-//         });
-
-//         dispatch({ type: GET_RECIPEID, payload: recipeApi});
-
-//     };
-// };

@@ -1,6 +1,6 @@
 import { GET_RECIPES, GET_DIETS, GET_RECIPES_BY_NAME, NEXT_PAGE, PREV_PAGE, CHANGE_PAG, SEARCH, CREATE_RECIPE, DELETE_RECIPE, FILTER_BY_DIETS, FILTER_SORT_NAME, FILTER_RECIPES_SOURCE, FILTER_HEALTHSCORE } from "./action-types";
 
-const initialState = { //Este es el estado global.
+const initialState = { //Estado global.
     recipes: [],
     recipesCopy: [],
     diets: [],

@@ -1,11 +1,11 @@
 const { DataTypes } = require('sequelize');
-// Exportamos una funcion que define el modelo
+// Se exporta una funcion que define el modelo.
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
-  // defino el modelo
+  // Se define el modelo:
   sequelize.define('Recipe', {
     id: {
-      type: DataTypes.UUID,  // fsdffds-54dd4-dfd5f57
+      type: DataTypes.UUID,  
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       unique: true,
@@ -39,6 +39,6 @@ module.exports = (sequelize) => {
     },
     createInBd: true
 
-  }, { timestamps: false });
+  }, { timestamps: false });  // No se utilizarán automáticamente las columnas de fecha de creación y actualización
 };
 

@@ -28,6 +28,3 @@ function App() {
 
 export default App;
 
-/* Esta es otra manera de definir una ruta:
-  <Route exact path="/detail" component={Detail} />
-*/

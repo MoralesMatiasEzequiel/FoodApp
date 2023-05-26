@@ -11,11 +11,7 @@ const Card = (props) => {
                     <h3 className={style.name}>{props.name}</h3>  
                     
                     <h5 className={style.diets}>Diets: {props.diets.join(', ')}</h5>
-
-                    {/* <p>imagen: {props.image}</p>
-                    <p>name: {props.name}</p>
-                    <p>diets: {props.diets}</p> */}
-                    {/* <p>steps: {props.steps}</p> */}
+                    
                 </div>
             </Link>
         </div>

@@ -9,7 +9,6 @@ export const RecipesFilter = () => {
 
     const handleFilterBySource = (source) => {
         dispatch(filterRecipes(source));
-        // console.log(source);
     };
 
     return (

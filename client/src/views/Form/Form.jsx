@@ -81,7 +81,7 @@ const Form = () => {
             
                 <label className={style.label} htmlFor="name">Name: </label>
                 <br/>
-                <input className={style.input} type='text' name="name" value={form.name} onChange={handleChange} />
+                <input className={style.input} type='text' name="name" value={form.name} onChange={handleChange} autocomplete="off"/>
                 <br/>
                 {errors.name && <p className={style.errors}>{errors.name}</p>}           
             

@@ -14,7 +14,6 @@ const CardsContainer = () => {
     let cantPages = Math.floor(recipes.length / 9);
     let viewRecipes = recipes.slice(start,end);
 
-
    
     return (
         <div>
@@ -42,10 +41,3 @@ const CardsContainer = () => {
 }
 
 export default CardsContainer;
-
-/*
-  {recipes.map(user => {
-                return <Card        
-                />
-            })}
-*/
