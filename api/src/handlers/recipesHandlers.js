@@ -58,10 +58,10 @@ const createRecipeHandler = async (req, res) => {
         if (!name || !image || !summary || !healthScore || !steps || !createInBd) {
             return res.status(400).json({ error: 'Missing required data' });
         }
-
+        
         const newRecipe = await createRecipe(name, image, summary, healthScore, steps, diets, createInBd);
         
-        res.status(201).json(newRecipe);
+        res.status(201).send('Recipe created!');
 
     } catch (error) {
         res.status(400).json({ error: error.message });
